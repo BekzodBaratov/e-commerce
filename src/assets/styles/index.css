@@ -1,0 +1,3 @@
+.secondary__button {
+    @apply flex items-center py-[9px] px-[32px] bg-[#EDF1FD] rounded-[5px] text-[#3365FC
+}

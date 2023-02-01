@@ -1,0 +1,41 @@
+{
+  "name": "e-commerse",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vue-tsc && vite build",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "@vuelidate/core": "^2.0.0",
+    "@vuelidate/validators": "^2.0.0",
+    "apexcharts": "^3.35.4",
+    "axios": "^1.2.1",
+    "pinia": "^2.0.29",
+    "vue": "^3.2.41",
+    "vue-router": "4"
+  },
+  "devDependencies": {
+    "@types/axios": "^0.14.0",
+    "@types/node": "^18.11.9",
+    "@types/vuelidate": "^0.7.15",
+    "@typescript-eslint/eslint-plugin": "^5.44.0",
+    "@typescript-eslint/parser": "^5.44.0",
+    "@vitejs/plugin-vue": "^3.2.0",
+    "@vue/eslint-config-typescript": "^11.0.2",
+    "autoprefixer": "^10.4.13",
+    "eslint": "^8.28.0",
+    "eslint-config-prettier": "^8.5.0",
+    "eslint-plugin-prettier": "^4.2.1",
+    "eslint-plugin-vue": "^9.8.0",
+    "postcss": "^8.4.19",
+    "prettier": "^2.8.0",
+    "tailwindcss": "^3.2.4",
+    "typescript": "^4.6.4",
+    "vite": "^3.2.3",
+    "vue-eslint-parser": "^9.1.0",
+    "vue-tsc": "^1.0.9"
+  }
+}

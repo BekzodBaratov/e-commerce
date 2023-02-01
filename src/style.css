@@ -1,0 +1,57 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+html {
+  box-sizing: border-box;
+  scroll-behavior: smooth;
+  transition: all 0.2s linear;
+  margin: 0;
+  padding: 0;
+}
+body {
+  font-family: sans-serif;
+  background-color: aquamarine;
+  overflow-x: hidden;
+  color: #0f0f0f;
+}
+
+/* scroll */
+::-webkit-scrollbar {
+  width: 8px;
+}
+::-webkit-scrollbar-thumb {
+  background: rgba(186, 186, 186, 0.671);
+  border-radius: 10px;
+}
+
+.btn {
+  @apply py-1 px-3 text-center text-white rounded-md  duration-100 hover:-translate-y-1 hover:shadow-md;
+}
+
+/* responsive */
+@media (min-width: 240px) {
+  html {
+    font-size: 80%;
+  }
+}
+@media (min-width: 768px) {
+  html {
+    font-size: 85%;
+  }
+}
+@media (min-width: 1024px) {
+  html {
+    font-size: 90%;
+  }
+}
+@media (min-width: 1280px) {
+  html {
+    font-size: 100%;
+  }
+}
+@media (min-width: 1536px) {
+  html {
+    font-size: 110%;
+  }
+}
