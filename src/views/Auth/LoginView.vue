@@ -34,7 +34,7 @@
 import { ref, reactive, computed } from "vue"
 import { required, minLength, helpers, maxLength } from "@vuelidate/validators"
 import { useVuelidate } from "@vuelidate/core"
-import { publicApi } from "@/plugins/axios"
+// import { publicApi } from "@/plugins/axios"
 
 import ButtonFillVue from "@/components/buttons/ButtonFill.vue"
 import LoadingModalVue from "@/components/LoadingModal.vue"

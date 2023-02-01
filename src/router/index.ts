@@ -4,7 +4,7 @@ import { useUserStore } from "@/store/userStore"
 const HomeView = () => import("@/views/Home.vue")
 const ProductDetail = () => import("@/views/Product.vue")
 const LoginView = () => import("@/views/Auth/LoginView.vue")
-const RegisterView = () => import("../views/Auth/Register.vue")
+const RegisterView = () => import("@/views/Auth/Register.vue")
 const PageNotFound = () => import("@/views/404.vue")
 
 const router = createRouter({

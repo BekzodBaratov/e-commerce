@@ -36,7 +36,7 @@
   <LoadingModalVue v-if="loading" />
 </template>
 
-<script setup>
+<script setup lang="ts">
 import { computed, reactive, ref } from "vue"
 import axios from "axios"
 import { useVuelidate } from "@vuelidate/core"
@@ -66,16 +66,16 @@ const rules = computed(() => {
       minLength: minLength(8),
       maxLength: maxLength(32),
       containsUppercase: helpers.withMessage("The password requires an uppercase character", function (value) {
-        return /[A-Z]/.test(value)
+        return /[A-Z]/.test(value as any)
       }),
       containsLowercase: helpers.withMessage("The password requires an lowercase character", function (value) {
-        return /[a-z]/.test(value)
+        return /[a-z]/.test(value as any)
       }),
       containsNumber: helpers.withMessage("The password requires an number character", function (value) {
-        return /[0-9]/.test(value)
+        return /[0-9]/.test(value as any)
       }),
       containsSpecial: helpers.withMessage("The password requires an special character", function (value) {
-        return /[#?!_@$%^&*-]/.test(value)
+        return /[#?!_@$%^&*-]/.test(value as any)
       }),
     },
     passwordConfirm: { required, sameAs: sameAs(userData.password) },
@@ -92,7 +92,7 @@ const handleRegister = () => {
   }
 }
 
-const fetchApi = (data) => {
+const fetchApi = (data: any) => {
   axios({
     method: "post",
     url: "users/signup",
