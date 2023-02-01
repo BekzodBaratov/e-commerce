@@ -1,4 +1,5 @@
 <template>
+  <Header />
   <div class="container mx-auto mt-4 px-2 md:px-0">
     <div class="flex flex-col gap-2 md:flex-row justify-between items-start md:items-end">
       <div class="flex gap-2">
@@ -15,7 +16,7 @@
 
 <script setup lang="ts">
 import { onMounted, ref } from "vue"
-import axios from "axios"
+import Header from "@/components/Header.vue"
 import CardVue from "@/components/Card.vue"
 import { publicApi } from "@/plugins/axios"
 
