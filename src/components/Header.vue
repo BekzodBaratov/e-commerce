@@ -6,7 +6,7 @@
       </RouterLink>
       <ul class="flex items-end gap-1">
         <li v-for="item in nav" :key="item.id" class="relative group">
-          <div v-if="item.requireAuth !!== store.isLoggedIn">
+          <div v-if="item.requireAuth == store.isLoggedIn">
             <RouterLink :to="item.link" class="font-semibold px-2 capitalize py-2 rounded-md hover:bg-slate-200">{{ item.name }}</RouterLink>
           </div>
           <!-- <div v-if="item.name == 'Cart'" class="miniCart group-hover:block hidden absolute top-full right-0">
