@@ -2,6 +2,7 @@ import { createRouter, createWebHistory, NavigationGuardNext, RouteLocationNorma
 import { useUserStore } from "@/store/userStore"
 
 const HomeView = () => import("@/views/Home.vue")
+const CartView = () => import("@/views/Cart.vue")
 const ProductDetail = () => import("@/views/Product.vue")
 const LoginView = () => import("@/views/Auth/LoginView.vue")
 const RegisterView = () => import("@/views/Auth/Register.vue")
@@ -17,11 +18,18 @@ const router = createRouter({
       meta: { requiresAuth: false },
     },
     {
+      path: "/products/cart",
+      component: CartView,
+      name: "Cart",
+      // meta: { requiresAuth: true },
+      // beforeEnter: guardAuth,
+    },
+    {
       path: "/products/:id",
       component: ProductDetail,
       name: "productDetail",
-      meta: { requiresAuth: true },
-      beforeEnter: guardAuth,
+      // meta: { requiresAuth: true },
+      // beforeEnter: guardAuth,
     },
     {
       path: "/login",
@@ -41,6 +49,7 @@ const router = createRouter({
       path: "/:pathMatch(.*)*",
       name: "NotFound",
       component: PageNotFound,
+      meta: { requiresAuth: false },
     },
   ],
 })

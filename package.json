@@ -14,6 +14,7 @@
     "apexcharts": "^3.35.4",
     "axios": "^1.2.1",
     "pinia": "^2.0.29",
+    "swiper": "^9.0.0",
     "vue": "^3.2.41",
     "vue-router": "4"
   },
