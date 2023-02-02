@@ -1,13 +1,11 @@
 <template>
-  <div>
-    <swiper :loop="true" :spaceBetween="15" :scrollbar="{ draggable: true }" :thumbs="{ swiper: thumbsSwiper }" :modules="modules" class="singleSwiper rounded-3xl">
-      <swiper-slide v-for="image in productImage"><img class="rounded-xl w-full object-cover h-96" :src="image" /></swiper-slide>
-    </swiper>
+  <swiper :loop="true" :spaceBetween="15" :scrollbar="{ draggable: true }" :thumbs="{ swiper: thumbsSwiper }" :modules="modules" class="singleSwiper rounded-3xl">
+    <swiper-slide v-for="image in productImage"><img class="rounded-xl w-full object-cover h-96" :src="image" /></swiper-slide>
+  </swiper>
 
-    <swiper @swiper="setThumbsSwiper" :loop="true" :spaceBetween="10" :slidesPerView="3" :freeMode="true" :watchSlidesProgress="true" :modules="modules" class="singleThumbSwiper">
-      <swiper-slide v-for="image in productImage"><img class="rounded-xl w-full object-cover h-40" :src="image" /></swiper-slide>
-    </swiper>
-  </div>
+  <swiper @swiper="setThumbsSwiper" :loop="true" :spaceBetween="10" :slidesPerView="3" :freeMode="true" :watchSlidesProgress="true" :modules="modules" class="singleThumbSwiper">
+    <swiper-slide v-for="image in productImage"><img class="rounded-xl w-full object-cover h-40" :src="image" /></swiper-slide>
+  </swiper>
 </template>
 
 <script setup lang="ts">

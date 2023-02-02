@@ -32,7 +32,7 @@
   >
     <SwiperSlide v-for="(val, key) in 8" :key="key" class="rounded-4xl pb-12">
       <RouterLink to="#">
-        <div class="bg-whiteBlue w-full rounded-xl p-4 px-8">
+        <div class="bg-primary w-full rounded-xl p-4 px-8">
           <div class="flex gap-2 items-center pb-2 md:pb-6 lg:pb-8">
             <svg width="35" height="35" viewBox="0 0 35 35" fill="none" xmlns="http://www.w3.org/2000/svg">
               <path
