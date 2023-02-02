@@ -9,11 +9,11 @@
       </svg>
       <p class="ml-2 font-bold">4.95</p>
       <span class="w-1 h-1 mx-3 bg-[#769acd] rounded-full"></span>
-      <a href="#" class="font-medium underline hover:no-underline">50 отзывов</a>
+      <a href="#" class="font-medium underline hover:no-underline">50 reviews</a>
     </div>
     <div class="singleComp grid grid-cols-12 gap-8 my-8">
       <div class="swiperImg col-span-12 md:col-span-5"><ShopSingleComp :productImage="productImage" /></div>
-      <div class="content col-span-12 md:col-span-7"><SingleContentComp /></div>
+      <div class="content col-span-12 md:col-span-7"><SingleContentComp :productData="productData" /></div>
     </div>
     <div>
       <UserCommit />

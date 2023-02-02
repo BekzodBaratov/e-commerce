@@ -15,7 +15,6 @@ module.exports = {
     extend: {
       colors: {
         smoke: "#F1F1F3",
-        primary: "#3366FF",
         gold: "#FFA445",
         primary: "#002e69",
         danger: "#D52C55",
