@@ -115,7 +115,7 @@ const fetchApi = (data: any) => {
 .step {
   @apply w-6 h-6 flex z-10 relative 
   bg-white justify-center items-center rounded-full font-semibold
-   text-white text-blue-900;
+   text-white;
 }
 .active .step {
   @apply bg-blue-900 fill-white;
