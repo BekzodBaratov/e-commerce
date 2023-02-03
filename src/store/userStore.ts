@@ -30,5 +30,9 @@ export const useUserStore = defineStore("user", () => {
   function login(id: number) {
     state.value.userId = id
   }
-  return { isRegisteration, logout, login }
+  function userId() {
+    return state.value.userId
+  }
+
+  return { isRegisteration, logout, login, userId }
 })

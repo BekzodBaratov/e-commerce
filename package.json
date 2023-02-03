@@ -16,9 +16,11 @@
     "pinia": "^2.0.29",
     "swiper": "^9.0.0",
     "vue": "^3.2.41",
-    "vue-router": "4"
+    "vue-router": "4",
+    "vue-toastification": "^2.0.0-rc.5"
   },
   "devDependencies": {
+    "@tailwindcss/line-clamp": "^0.4.2",
     "@types/axios": "^0.14.0",
     "@types/node": "^18.11.9",
     "@types/vuelidate": "^0.7.15",

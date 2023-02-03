@@ -6,7 +6,7 @@
           <div class="flex flex-col">
             <div class="mb-4 flex flex-col">
               <p>Username</p>
-              <input class="bg-transparent border min-w-[16rem] border-white rounded-xl py-1 px-3 text-[#f4f4f9] outline-none text-center placeholder:text-[#F4F6F9B2]" type="email" v-model="state.username" name="email" id="email" placeholder="john@gmail.com" />
+              <input class="bg-transparent border min-w-[16rem] border-white rounded-xl py-1 px-3 text-[#f4f4f9] outline-none text-center placeholder:text-[#F4F6F9B2]" type="email" v-model="state.username" name="email" id="email" placeholder="kminchelle" />
               <span class="text-sm text-end text-red-600" v-if="v$.username.$error">{{ v$.username.$errors[0].$message }}</span>
             </div>
             <div class="flex flex-col">
@@ -32,15 +32,19 @@
 
 <script setup lang="ts">
 import { ref, reactive, computed } from "vue"
-import { required, minLength, helpers, maxLength } from "@vuelidate/validators"
+import { required, minLength, maxLength } from "@vuelidate/validators"
 import { useVuelidate } from "@vuelidate/core"
-// import { publicApi } from "@/plugins/axios"
+import { publicApi } from "@/plugins/axios"
+import { useToast } from "vue-toastification"
+import { useRouter } from "vue-router"
 
 import ButtonFillVue from "@/components/buttons/ButtonFill.vue"
 import LoadingModalVue from "@/components/LoadingModal.vue"
-// import { useUserRegister } from "@/store/UserRegister"
+import { useUserStore } from "@/store/userStore"
 
-// const store = useUserRegister()
+const store = useUserStore()
+const toast = useToast()
+const router = useRouter()
 
 const loading = ref(false)
 
@@ -51,23 +55,7 @@ const state = reactive({
 const rules = computed(() => {
   return {
     username: { required, maxLength: maxLength(255) },
-    password: {
-      required,
-      minLength: minLength(8),
-      maxLength: maxLength(32),
-      containsUppercase: helpers.withMessage("The password requires an uppercase character", function (value) {
-        return /[A-Z]/.test(value as string)
-      }),
-      containsLowercase: helpers.withMessage("The password requires an lowercase character", function (value) {
-        return /[a-z]/.test(value as string)
-      }),
-      containsNumber: helpers.withMessage("The password requires an number character", function (value) {
-        return /[0-9]/.test(value as string)
-      }),
-      containsSpecial: helpers.withMessage("The password requires an special character", function (value) {
-        return /[#?!_@$%^&*.-]/.test(value as string)
-      }),
-    },
+    password: { required, minLength: minLength(4), maxLength: maxLength(32) },
   }
 })
 const v$ = useVuelidate(rules, state)
@@ -80,40 +68,25 @@ const formLoginData = () => {
   }
 }
 const fetchApi = (data: any) => {
-  fetch("https://dummyjson.com/auth/login", {
+  publicApi({
     method: "POST",
     headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({
-      username: data.username,
-      password: data.password,
-      // expiresInMins: 60, // optional
-    }),
+    url: "auth/login",
+    data: data,
   })
-    .then((res) => res.json())
-    .then((res) => console.log(res))
-    .catch((err) => console.log(err))
-    .finally(() => console.log("end"))
-
-  // publicApi({
-  //   method: "POST",
-  //   headers: { "Content-Type": "application/json" },
-  //   url: "auth/login",
-  //   // withCredentials: true,
-  //   data: data,
-  // })
-  //   .then(function (response: any) {
-  //     alert(response.data.message)
-  //     console.log(response)
-  //   })
-  //   .catch(function (error: any) {
-  //     alert(error.message + ", Please try again")
-  //     console.log(error)
-  //     state.username = ""
-  //     state.password = ""
-  //   })
-  //   .finally(function () {
-  //     loading.value = false
-  //   })
+    .then(function (response: any) {
+      toast.success("You successfully logged in")
+      store.login(response.data.id)
+      router.push("/")
+    })
+    .catch(function (error: any) {
+      toast.info(error.message + ", Please try again")
+      state.username = ""
+      state.password = ""
+    })
+    .finally(function () {
+      loading.value = false
+    })
 }
 </script>
 

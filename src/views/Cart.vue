@@ -1,8 +1,9 @@
 <template>
+  <Header />
   <div class="min-h-screen">
     <div class="container mx-auto">
       <h1 class="text-3xl text-primary my-4">Оформление заказа</h1>
-      <div class="flex flex-col-reverse md:flex-row justify-between">
+      <div class="grid md:grid-cols-2 flex-col-reverse justify-between">
         <div class="space-y-3 mb-6">
           <div class="flex flex-col gap-1">
             <label for="adress "><span class="text-primaryBlue">Адрес доставки</span></label>
@@ -26,12 +27,9 @@
         </div>
 
         <div class="mb-6">
-          <div class="bg-[#4F87D30D] ml-0 md:ml-28 mr-28 md:mr-0 rounded pt-6">
+          <div class="bg-[#4F87D30D] rounded pt-6">
             <div class="cards px-6 flex flex-col gap-3 max-h-[30rem] min-h-[20rem] overflow-auto">
-              <div class="card bg-white rounded-xl grid grid-cols-2 max-h-52 text-sm shadow-[0_0_5px_rgba(0,0,0,0.3)]">
-                <div class="img">
-                  <!-- <img class="object-contain object-center" src="/src/assets/img/magazin/card/Rectangle64.png" alt="cardImg" /> -->
-                </div>
+              <div v-if="userCart.products" v-for="cart in userCart.products" class="card bg-white rounded-xl max-h-52 text-sm shadow-[0_0_5px_rgba(0,0,0,0.3)]">
                 <div class="rounded-xl bg-[#F4F6F9] flex flex-col gap-3 p-2">
                   <div class="flex justify-between">
                     <div class="flex items-center">
@@ -44,10 +42,14 @@
                       <p class="text-primaryBlue underline">50 отзывов</p>
                     </div>
                   </div>
-                  <h3 class="">Intel CORE i3 10100 CPU Socket LGA 1200 3.60G...</h3>
+                  <h3 class="line-clamp-1">{{ cart.title }}</h3>
                   <div class="text-primaryBlue">В наличии</div>
                   <div class="flex justify-between items-center">
-                    <p class="font-semibold">999 000 сум</p>
+                    <div class="space-x-2">
+                      <span class="font-semibold text-lg text-danger">{{ cart.discountedPrice }}$</span>
+                      <del class="text-gray-500">{{ cart.total }}$</del>
+                      <span class="text-danger font-semibold">{{ cart.discountPercentage }}%Off</span>
+                    </div>
                     <form>
                       <span class="flex gap-2">
                         <button @click.prevent="countFunc(false)" class="text-primary">
@@ -55,7 +57,7 @@
                             <path d="M0.12 2.104H10.136V0.296H0.12V2.104Z" fill="#002E69" />
                           </svg>
                         </button>
-                        <input :value="count" maxlength="5" minlength="0" class="border w-10 my-1 py-[2px] text-sm border-whiteBlue rounded-lg text-primary text-center" type="number" id="countProd" />
+                        <input :value="cart.quantity" class="border w-10 my-1 py-[2px] text-sm border-whiteBlue rounded-lg text-primary text-center" type="number" id="countProd" />
                         <button @click.prevent="countFunc(true)">
                           <svg width="9" height="9" viewBox="0 0 9 9" fill="none" xmlns="http://www.w3.org/2000/svg">
                             <path d="M0.0400001 5.768H8.456V3.768H0.0400001V5.768ZM3.176 0.552V8.984H5.32V0.552H3.176Z" fill="#002E69" />
@@ -74,17 +76,17 @@
               </div>
               <div class="space-y-1">
                 <div class="flex justify-between items-center">
-                  <p>Товар (2)</p>
-                  <p>1 998 000 сум</p>
+                  <p>Товар ({{ userCart.totalProducts }})</p>
+                  <p>{{ userCart.total }} $</p>
                 </div>
                 <div class="flex justify-between items-center">
                   <p>Сумма скидки</p>
-                  <p class="text-red-500">-200 000 сум</p>
+                  <p class="text-red-500">-{{ userCart.total - userCart.discountedTotal }} $</p>
                 </div>
               </div>
               <div class="flex justify-between items-center font-bold">
                 <p>Итого</p>
-                <p>1 798 000 сум</p>
+                <p>{{ userCart.discountedTotal }} $</p>
               </div>
             </div>
           </div>
@@ -93,6 +95,7 @@
     </div>
   </div>
 
+  <LoadingModalVue v-if="loading" />
   <Teleport to="body">
     <div v-if="isOpenModal" @click="isOpenModal = false" class="fixed z-[99999] inset-0 bg-[#0006] backdrop-blur"></div>
     <div v-if="isOpenModal" class="PayModal fixed z-[999999] w-[40rem] top-1/2 left-1/2 -translate-y-1/2 -translate-x-1/2 bg-white rounded-md px-6 py-8 space-y-10 shadow-lg">
@@ -153,8 +156,15 @@
 
 <script setup lang="ts">
 import { ref } from "vue"
+import { useUserStore } from "@/store/userStore"
+import { useRouter } from "vue-router"
+import Header from "@/components/Header.vue"
 import ButtonFillVue from "../components/buttons/ButtonFill.vue"
 import ButtonStrokeVue from "../components/buttons/ButtonStroke.vue"
+import { publicApi } from "@/plugins/axios"
+import LoadingModalVue from "@/components/LoadingModal.vue"
+const store = useUserStore()
+const router = useRouter()
 
 const count = ref(1)
 const countFunc = (val: boolean) => {
@@ -164,6 +174,53 @@ const countFunc = (val: boolean) => {
 }
 
 const isOpenModal = ref(false)
+const loading = ref(true)
+
+if (!store.userId()) {
+  router.push("/")
+}
+interface CartProd {
+  id: number
+  title: string
+  price: number
+  quantity: number
+  total: number
+  discountedPrice: number
+  discountPercentage: number
+}
+interface UserCart {
+  discountedTotal: number
+  products: CartProd[]
+  total: number
+  totalProducts: number
+  totalQuantity: number
+}
+
+const userCart = ref<UserCart>({
+  discountedTotal: 3445,
+  products: [],
+  total: 4040,
+  totalProducts: 5,
+  totalQuantity: 10,
+})
+async function fetchUserCart() {
+  try {
+    const res = await publicApi.get(`/carts/user/${store.userId()}`)
+
+    userCart.value = {
+      discountedTotal: res.data.carts[0].discountedTotal,
+      products: res.data.carts[0].products,
+      total: res.data.carts[0].total,
+      totalProducts: res.data.carts[0].totalProducts,
+      totalQuantity: res.data.carts[0].totalQuantity,
+    }
+  } catch (e) {
+    console.log(e)
+  } finally {
+    loading.value = false
+  }
+}
+fetchUserCart()
 </script>
 
 <style>

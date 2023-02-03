@@ -63,14 +63,8 @@ const dataProducts = reactive([
   { name: "Brand", param: props.productData.brand },
   { name: "Stock", param: props.productData.stock },
 ])
-interface Cart {
-  id: number
-  count: number
-}
+
 function addToCart() {
-  console.log(store.cart)
-  const arr = ref<Cart>({ id: props.productData.id as any | never, count: count.value as any | never })
-  store.cart.push(arr.value as never)
-  console.log(store.cart)
+  console.log("hi")
 }
 </script>

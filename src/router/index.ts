@@ -21,15 +21,14 @@ const router = createRouter({
       path: "/products/cart",
       component: CartView,
       name: "Cart",
-      // meta: { requiresAuth: true },
-      // beforeEnter: guardAuth,
+      meta: { requiresAuth: true },
+      beforeEnter: guardAuth,
     },
     {
       path: "/products/:id",
       component: ProductDetail,
       name: "productDetail",
-      // meta: { requiresAuth: true },
-      // beforeEnter: guardAuth,
+      meta: { requiresAuth: false },
     },
     {
       path: "/login",
@@ -60,7 +59,7 @@ function guardAuth(to: RouteLocationNormalized, from: RouteLocationNormalized, n
     // this route requires auth, check if logged in
     // if not to redirect to login page.
     if (!userStore.isRegisteration && !localStorage.getItem("accessToken")) {
-      next({ name: "Register" })
+      next({ name: "Login" })
     } else if (userStore.isRegisteration) {
       next()
     } else {

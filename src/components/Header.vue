@@ -1,5 +1,5 @@
 <template>
-  <div class="fixed z-[99999] top-0 inset-x-0 bg-white shadow-md py-2">
+  <div class="fixed z-[99] top-0 inset-x-0 bg-white shadow-md py-2">
     <div class="container mx-auto flex justify-between items-center">
       <RouterLink to="/" class="logo">
         <img class="h-7 md:h-10" src="@/assets/logo/logo.png" alt="logo" />
@@ -33,7 +33,8 @@ function handleNav(val: string) {
 }
 
 const nav = reactive<Nav[]>([
-  { id: 1, name: "Signup", link: "/register", requireAuth: false },
+  // { id: 1, name: "Signup", link: "/register", requireAuth: false },
+  { id: 3, name: "Login", link: "/login", requireAuth: false },
   { id: 2, name: "Cart", link: "/products/cart", requireAuth: true },
   { id: 3, name: "Logout", link: "", requireAuth: true },
 ])
