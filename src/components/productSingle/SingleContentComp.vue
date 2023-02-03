@@ -23,9 +23,9 @@
         <div class="rounded-xl py-2">
           <p class="text-2xl text-red-500 font-semibold pb-2">{{ props.productData.price }} $</p>
           <div class="flex gap-1">
-            <RouterLink @click="addToCart" class="flex" to="/products/cart">
+            <div @click="addToCart" class="flex">
               <ButtonFill>Add to Cart</ButtonFill>
-            </RouterLink>
+            </div>
             <RouterLink to="/products/cart" class="p-2 rounded-lg border border-primary flex items-center justify-center cursor-pointer">
               <img src="../../assets/icons/shopping-cart.svg" alt="shop-cart" />
             </RouterLink>
@@ -42,19 +42,29 @@
       <p class="text-primary">{{ props.productData.description }}</p>
     </div>
   </div>
+  <LoadingModal v-if="loading" />
 </template>
 
 <script setup lang="ts">
+import { publicApi } from "@/plugins/axios"
 import { ref, reactive } from "vue"
+import { useRoute, useRouter } from "vue-router"
 import ButtonFill from "../buttons/ButtonFill.vue"
-import { useProductStore } from "../../store/productStore"
-const store = useProductStore()
+import { useUserStore } from "@/store/userStore"
+import LoadingModal from "@/components/loadingModal.vue"
+import { useToast } from "vue-toastification"
+
+const store = useUserStore()
+const route = useRoute()
+const router = useRouter()
+const toast = useToast()
 
 const count = ref(1)
 const countFunc = (val: any) => {
   if (count.value <= 1 && !val) return
   val ? count.value++ : count.value--
 }
+const loading = ref(false)
 
 const props = defineProps(["productData"])
 
@@ -64,7 +74,32 @@ const dataProducts = reactive([
   { name: "Stock", param: props.productData.stock },
 ])
 
-function addToCart() {
-  console.log("hi")
+async function addToCart() {
+  try {
+    loading.value = true
+    const res = await publicApi("/carts/add", {
+      method: "POST",
+      headers: {
+        Authorization: `Bearer ${store.userToken()}`,
+      },
+      data: {
+        userId: store.userId(),
+        products: [
+          {
+            id: route.params.id,
+            quantity: count.value,
+          },
+        ],
+      },
+    })
+    console.log(res)
+    router.push("/products/cart")
+    toast.success("Product successfully added")
+  } catch (e) {
+    console.log(e)
+    toast.success("Something went wrong")
+  } finally {
+    loading.value = false
+  }
 }
 </script>

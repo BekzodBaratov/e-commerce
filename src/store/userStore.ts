@@ -1,11 +1,10 @@
 import { ref, watch, computed, reactive } from "vue"
 import { defineStore } from "pinia"
-import { useRouter } from "vue-router"
 
 export const useUserStore = defineStore("user", () => {
-  const router = useRouter()
   const state = ref({
     userId: null as null | number,
+    access_token: "" as string,
   })
 
   if (localStorage.getItem("state")) {
@@ -25,14 +24,17 @@ export const useUserStore = defineStore("user", () => {
   function logout() {
     state.value.userId = null
     localStorage.removeItem("state")
-    router.push("/")
   }
-  function login(id: number) {
+  function login(id: number, token: string) {
     state.value.userId = id
+    state.value.access_token = token
   }
   function userId() {
     return state.value.userId
   }
+  function userToken() {
+    return state.value.access_token
+  }
 
-  return { isRegisteration, logout, login, userId }
+  return { isRegisteration, logout, login, userId, userToken }
 })

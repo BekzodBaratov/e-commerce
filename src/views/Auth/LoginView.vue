@@ -76,7 +76,9 @@ const fetchApi = (data: any) => {
   })
     .then(function (response: any) {
       toast.success("You successfully logged in")
-      store.login(response.data.id)
+      store.login(response.data.id, response.data.token)
+      console.log(response)
+
       router.push("/")
     })
     .catch(function (error: any) {
