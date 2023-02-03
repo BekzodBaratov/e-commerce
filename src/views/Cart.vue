@@ -30,7 +30,7 @@
             <div class="cards px-6 flex flex-col gap-3 max-h-[30rem] min-h-[20rem] overflow-auto">
               <div class="card bg-white rounded-xl grid grid-cols-2 max-h-52 text-sm shadow-[0_0_5px_rgba(0,0,0,0.3)]">
                 <div class="img">
-                  <img class="object-contain object-center" src="/src/assets/img/magazin/card/Rectangle64.png" alt="cardImg" />
+                  <!-- <img class="object-contain object-center" src="/src/assets/img/magazin/card/Rectangle64.png" alt="cardImg" /> -->
                 </div>
                 <div class="rounded-xl bg-[#F4F6F9] flex flex-col gap-3 p-2">
                   <div class="flex justify-between">

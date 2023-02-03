@@ -2,6 +2,8 @@ import { defineStore } from "pinia"
 
 export const useProductStore = defineStore("product", {
   state: () => ({
-    count: 0,
+    cart: [
+      // {id:'54', count:2}
+    ],
   }),
 })

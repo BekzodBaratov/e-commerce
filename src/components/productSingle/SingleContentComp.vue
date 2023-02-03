@@ -23,7 +23,7 @@
         <div class="rounded-xl py-2">
           <p class="text-2xl text-red-500 font-semibold pb-2">{{ props.productData.price }} $</p>
           <div class="flex gap-1">
-            <RouterLink class="flex" to="/products/cart">
+            <RouterLink @click="addToCart" class="flex" to="/products/cart">
               <ButtonFill>Add to Cart</ButtonFill>
             </RouterLink>
             <RouterLink to="/products/cart" class="p-2 rounded-lg border border-primary flex items-center justify-center cursor-pointer">
@@ -47,6 +47,8 @@
 <script setup lang="ts">
 import { ref, reactive } from "vue"
 import ButtonFill from "../buttons/ButtonFill.vue"
+import { useProductStore } from "../../store/productStore"
+const store = useProductStore()
 
 const count = ref(1)
 const countFunc = (val: any) => {
@@ -57,8 +59,18 @@ const countFunc = (val: any) => {
 const props = defineProps(["productData"])
 
 const dataProducts = reactive([
-  { name: "Category", param: "smartphones" },
-  { name: "Brand", param: "Apple" },
-  { name: "Stock", param: "94" },
+  { name: "Category", param: props.productData.category },
+  { name: "Brand", param: props.productData.brand },
+  { name: "Stock", param: props.productData.stock },
 ])
+interface Cart {
+  id: number
+  count: number
+}
+function addToCart() {
+  console.log(store.cart)
+  const arr = ref<Cart>({ id: props.productData.id as any | never, count: count.value as any | never })
+  store.cart.push(arr.value as never)
+  console.log(store.cart)
+}
 </script>
