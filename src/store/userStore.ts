@@ -1,41 +1,34 @@
-import {defineStore} from 'pinia'
-import router from "@/router";
+import { ref, watch, computed, reactive } from "vue"
+import { defineStore } from "pinia"
+import { useRouter } from "vue-router"
 
-export const useUserStore = defineStore('user', {
-    state: () => ({
-        isAuthenticated: false,
-    }),
-    actions: {
-        authUser() {
-            if (localStorage.getItem("isAuthenticated")) {
-                console.log(true)
-            } else {
-                console.log(false)
-            }
-        },
-        changeUserAuth(state: boolean) {
-            this.isAuthenticated = state;
-        },
-        Init() {
-            // I  could add some validation to check whether the user has valid token or not
-            // It was because of back-end the authorization field didn't work
-            // and also lack of time
-            // but thanks a lot it was an awesome experience
-            if (localStorage.getItem("accessToken")) {
-                this.isAuthenticated = true;
-            } else {
-                this.isAuthenticated = false
-            }
-        },
-        logOut() {
-            localStorage.removeItem("accessToken")
-            this.isAuthenticated = false
-            router.push("/login")
-        }
+export const useUserStore = defineStore("user", () => {
+  const router = useRouter()
+  const state = ref({
+    userId: null as null | number,
+  })
+
+  if (localStorage.getItem("state")) {
+    state.value = JSON.parse(localStorage.getItem("state") as any)
+  }
+  watch(
+    state,
+    (userVal) => {
+      localStorage.setItem("state", JSON.stringify(userVal))
     },
-    getters: {
-        isLoggedIn: (state) => {
-            return state.isAuthenticated;
-        }
-    }
+    { deep: true }
+  )
+
+  const isRegisteration = computed(() => {
+    return state.value.userId !== null
+  })
+  function logout() {
+    state.value.userId = null
+    localStorage.removeItem("state")
+    router.push("/")
+  }
+  function login(id: number) {
+    state.value.userId = id
+  }
+  return { isRegisteration, logout, login }
 })

@@ -4,14 +4,19 @@
       <div class="flex flex-col gap-6">
         <form class="flex flex-col gap-2 mb-8">
           <div class="name flex flex-col gap-0">
-            <label for="username text-sm">First Name:</label>
-            <input class="bg-transparent border min-w-[16rem] border-white rounded-xl py-1 px-3 text-[#f4f4f9] outline-none text-center placeholder:text-[#f4f6f927]" type="text" v-model="userData.firstName" name="username" id="username" placeholder="John" />
-            <p v-if="v$.firstName.$error" class="text-sm text-end text-red-600">{{ v$.firstName.$errors[0].$message }}*</p>
+            <label for="username text-sm">Your Name:</label>
+            <input class="bg-transparent border min-w-[16rem] border-white rounded-xl py-1 px-3 text-[#f4f4f9] outline-none text-center placeholder:text-[#f4f6f927]" type="text" v-model="userData.username" name="username" id="username" placeholder="John" />
+            <p v-if="v$.username.$error" class="text-sm text-end text-red-600">{{ v$.username.$errors[0].$message }}*</p>
           </div>
-          <div class="name flex flex-col gap-0">
-            <label for="username text-sm">Last Name:</label>
-            <input class="bg-transparent border min-w-[16rem] border-white rounded-xl py-1 px-3 text-[#f4f4f9] outline-none text-center placeholder:text-[#f4f6f927]" type="text" v-model="userData.lastName" name="username" id="username" placeholder="Doe" />
-            <p v-if="v$.lastName.$error" class="text-sm text-end text-red-600">{{ v$.lastName.$errors[0].$message }}*</p>
+          <div class="email flex flex-col gap-0">
+            <label for="email">Your Email:</label>
+            <input class="bg-transparent border min-w-[16rem] border-white rounded-xl py-1 px-3 text-[#f4f4f9] outline-none text-center placeholder:text-[#f4f6f927]" type="email" v-model="userData.email" name="email" id="email" placeholder="john@gmail.com" />
+            <p v-if="v$.email.$error" class="text-sm text-end text-red-600">{{ v$.email.$errors[0].$message }}*</p>
+          </div>
+          <div class="password flex flex-col gap-0">
+            <label for="password">Your Password:</label>
+            <input class="bg-transparent capitalize border min-w-[16rem] border-white rounded-xl py-1 px-3 text-[#f4f4f9] outline-none text-center placeholder:text-[#F4F6F9B2]" type="password" v-model="userData.password" name="password" id="password" />
+            <p v-if="v$.password.$error" class="text-sm text-end text-red-600">{{ v$.password.$errors[0].$message }}*</p>
           </div>
 
           <div class="flex justify-center mt-3">
@@ -28,32 +33,31 @@
 
 <script setup lang="ts">
 import { computed, reactive, ref } from "vue"
-import axios from "axios"
+import { useRouter } from "vue-router"
 import { useVuelidate } from "@vuelidate/core"
-import { required, minLength, maxLength } from "@vuelidate/validators"
+import { required, email, minLength, maxLength } from "@vuelidate/validators"
+import { publicApi } from "../../plugins/axios"
 
-// import { useUserRegister } from "../../store/UserRegister"
+import { useUserStore } from "../../store/userStore"
 import ButtonFillVue from "@/components/buttons/ButtonFill.vue"
 import LoadingModalVue from "@/components/LoadingModal.vue"
-import { publicApi } from "@/plugins/axios"
 
-// const store = useUserRegister()
+const store = useUserStore()
+const router = useRouter()
 
 const loading = ref(false)
 
-interface UserData {
-  firstName: string
-  lastName: string
-}
-const userData = reactive<UserData>({
-  firstName: "",
-  lastName: "",
+const userData = reactive({
+  username: "",
+  email: "",
+  password: "",
 })
 
 const rules = computed(() => {
   return {
-    firstName: { required, minLength: minLength(3), maxLength: maxLength(255) },
-    lastName: { required, minLength: minLength(3), maxLength: maxLength(255) },
+    username: { required, minLength: minLength(3), maxLength: maxLength(52) },
+    email: { required, email, maxLength: maxLength(84) },
+    password: { required, minLength: minLength(8), maxLength: maxLength(32) },
   }
 })
 
@@ -71,18 +75,21 @@ const fetchApi = (data: any) => {
   publicApi({
     method: "POST",
     url: "users/add",
-    withCredentials: true,
     data: data,
   })
     .then(function (response) {
-      // store.user = response.data.data.user
-      alert(response.data.message)
+      alert("Sign up success")
+      store.login(response.data.id)
+      router.push("/")
+      console.log(response)
     })
     .catch(function (error) {
       alert(error.message + ", Please try again")
+      console.log(error)
 
-      userData.firstName = ""
-      userData.lastName = ""
+      userData.username = ""
+      userData.email = ""
+      userData.password = ""
     })
     .finally(function () {
       loading.value = false
