@@ -9,5 +9,5 @@
 </template>
 
 <script setup lang="ts">
-import LoadingSvg from "@/assets/icons/Infinity-loading.svg"
+import LoadingSvg from "../assets/icons/Infinity-loading.svg"
 </script>
