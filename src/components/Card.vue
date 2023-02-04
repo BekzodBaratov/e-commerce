@@ -36,5 +36,4 @@ import { realPrice } from "@/helpers"
 
 const props = defineProps(["data"])
 const data = ref(props.data)
-console.log(data.value.rating)
 </script>

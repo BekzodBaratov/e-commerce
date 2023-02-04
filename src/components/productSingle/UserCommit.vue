@@ -55,7 +55,7 @@
   <div class="md:w-4/5 grid grid-cols-2">
     <form class="flex flex-col items-start gap-4">
       <h3 class="title text-2xl pb-3">Поделитесь впечатлением о товаре</h3>
-      <textarea class="bg-transparent outline-none rounded-lg p-3 border border-primaryBlue" cols="40" rows="5" placeholder="Напишите ваш отзыв"></textarea>
+      <textarea v-model="userMessage" class="bg-transparent outline-none rounded-lg p-3 border border-primaryBlue" cols="40" rows="5" placeholder="Напишите ваш отзыв"></textarea>
       <button @click.prevent="addCommitByUserId">
         <ButtonFillVue color="#002e69"><span class="py-2">Sent Message</span></ButtonFillVue>
       </button>
@@ -96,9 +96,9 @@ const router = useRouter()
 const route = useRoute()
 const loading = ref(false)
 
+const userMessage = ref<string>("")
 const purchaseRate = ref<number | null>(null)
 function handleRate(i: number) {
-  console.log(i)
   purchaseRate.value = i
 }
 
@@ -115,10 +115,14 @@ async function addCommitByUserId() {
     router.push("/login")
     return
   }
+  if (userMessage.value.length < 14) {
+    toast.error("The message you want to send must be at least 14 characters long")
+    return
+  }
   try {
     loading.value = true
     await publicApi.post("https://dummyjson.com/comments/add", {
-      body: "This makes all sense to me!",
+      body: userMessage.value,
       postId: store.userId(),
       userId: 5,
     })
@@ -127,6 +131,7 @@ async function addCommitByUserId() {
     console.log(e)
   } finally {
     loading.value = false
+    userMessage.value = ""
   }
 }
 
@@ -136,7 +141,6 @@ async function GetAllCommentsByPostId() {
     loading.value = true
     const res = await publicApi.get(`https://dummyjson.com/comments/post/${route.params.id}`)
     commentsData.value = res.data.comments
-    console.log(res)
   } catch (e) {
     console.log(e)
   } finally {

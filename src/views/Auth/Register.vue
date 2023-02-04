@@ -41,9 +41,11 @@ import { publicApi } from "../../plugins/axios"
 import { useUserStore } from "../../store/userStore"
 import ButtonFillVue from "@/components/buttons/ButtonFill.vue"
 import LoadingModalVue from "@/components/LoadingModal.vue"
+import { useToast } from "vue-toastification"
 
 const store = useUserStore()
 const router = useRouter()
+const toast = useToast()
 
 const loading = ref(false)
 
@@ -71,29 +73,22 @@ const handleRegister = () => {
   }
 }
 
-const fetchApi = (data: any) => {
-  publicApi({
-    method: "POST",
-    url: "users/add",
-    data: data,
-  })
-    .then(function (response) {
-      alert("Sign up success")
-      store.login(response.data.id)
-      router.push("/")
-      console.log(response)
-    })
-    .catch(function (error) {
-      alert(error.message + ", Please try again")
-      console.log(error)
+const fetchApi = async (data: any) => {
+  try {
+    const response = await publicApi.post("users/add", data)
 
-      userData.username = ""
-      userData.email = ""
-      userData.password = ""
-    })
-    .finally(function () {
-      loading.value = false
-    })
+    toast.success("Sign up success")
+    store.login(response.data.id, response.data.token)
+    router.push("/")
+  } catch (e) {
+    console.log(e)
+
+    userData.username = ""
+    userData.email = ""
+    userData.password = ""
+  } finally {
+    loading.value = false
+  }
 }
 </script>
 

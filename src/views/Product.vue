@@ -19,6 +19,7 @@
       <UserCommit />
     </div>
   </div>
+  <LoadingModal v-if="loading" />
 </template>
 
 <script setup lang="ts">
@@ -30,10 +31,14 @@ import SingleContentComp from "@/components/productSingle/SingleContentComp.vue"
 import UserCommit from "@/components/productSingle/UserCommit.vue"
 import { publicApi } from "@/plugins/axios"
 import { Product } from "@/typing/product"
+import LoadingModal from "@/components/LoadingModal.vue"
+import { useToast } from "vue-toastification"
 
 const router = useRoute()
+const toast = useToast()
 const id = ref(router.params.id)
 const productData = ref<Product>()
+const loading = ref(true)
 
 const productImage = ref<string[]>([])
 
@@ -42,9 +47,10 @@ async function fetchProduct() {
     const res = await publicApi.get(`/products/${id.value}`)
     productData.value = res.data
     productImage.value = res.data.images
-    console.log(res)
   } catch (e) {
     console.log(e)
+  } finally {
+    loading.value = false
   }
 }
 fetchProduct()

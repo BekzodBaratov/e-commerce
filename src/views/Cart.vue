@@ -218,7 +218,6 @@ async function fetchUserCart() {
       totalProducts: res.data.carts[0].totalProducts,
       totalQuantity: res.data.carts[0].totalQuantity,
     }
-    console.log(res)
   } catch (e) {
     console.log(e)
   } finally {

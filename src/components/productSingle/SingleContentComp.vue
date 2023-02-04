@@ -92,7 +92,6 @@ async function addToCart() {
         ],
       },
     })
-    console.log(res)
     router.push("/products/cart")
     toast.success("Product successfully added")
   } catch (e) {
