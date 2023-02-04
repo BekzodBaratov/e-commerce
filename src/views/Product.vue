@@ -24,17 +24,12 @@
 <script setup lang="ts">
 import { ref } from "vue"
 import { useRoute } from "vue-router"
-import { useUserStore } from "@/store/userStore"
 import Header from "@/components/Header.vue"
 import ShopSingleComp from "../components/productSingle/ShopSingleComp.vue"
 import SingleContentComp from "@/components/productSingle/SingleContentComp.vue"
 import UserCommit from "@/components/productSingle/UserCommit.vue"
-import { useProductStore } from "@/store/productStore"
 import { publicApi } from "@/plugins/axios"
 import { Product } from "@/typing/product"
-
-const storeProduct = useProductStore()
-const storeUser = useUserStore()
 
 const router = useRoute()
 const id = ref(router.params.id)

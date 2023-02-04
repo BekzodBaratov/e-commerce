@@ -12,6 +12,7 @@
       <CardVue v-for="product in data.products" :key="product.id" :data="product" />
     </div>
   </div>
+  <LoadingModal v-if="loading" />
 </template>
 
 <script setup lang="ts">
@@ -19,6 +20,7 @@ import { onMounted, ref } from "vue"
 import Header from "@/components/Header.vue"
 import CardVue from "@/components/Card.vue"
 import { publicApi } from "@/plugins/axios"
+import LoadingModal from "@/components/LoadingModal.vue"
 
 interface Products {
   id: number
@@ -28,6 +30,7 @@ interface Data {
   products: Products[]
   limit: number
 }
+const loading = ref(true)
 const data = ref<Data>({
   total: 0,
   products: [],
@@ -40,6 +43,8 @@ async function getLists(val: string) {
     data.value = res.data
   } catch (e) {
     console.log(e)
+  } finally {
+    loading.value = false
   }
 }
 

@@ -1,10 +1,8 @@
 <template>
   <Swiper
     :navigation="true"
-    :lazy="true"
     :loop="true"
     :scrollbar="{ draggable: true }"
-    :centeredSlides="true"
     :pagination="{ clickable: true }"
     :breakpoints="{
       240: {
@@ -31,8 +29,8 @@
     :modules="[Navigation, Pagination]"
     class="swiper swiperBigComp swiperSmilarComp max-h-[34rem] mb-7"
   >
-    <SwiperSlide v-for="(val, key) in 8" :key="key" class="rounded-4xl pb-12">
-      <RouterLink to="#">
+    <SwiperSlide v-for="val in commentsData" :key="val.id" class="rounded-4xl pb-12">
+      <RouterLink to="">
         <div class="w-full bg-primaryBlue rounded-xl p-4 px-8">
           <div class="flex gap-2 items-center pb-2 md:pb-6 lg:pb-8">
             <svg width="35" height="35" viewBox="0 0 35 35" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -45,9 +43,9 @@
                 fill="white"
               />
             </svg>
-            <p class="text-white">Мадина</p>
+            <p class="text-white">{{ val.user.username }}</p>
           </div>
-          <div class="leading-relaxed text-white pb-2 md:pb-6 lg:pb-8">Lorem ipsum dolor sit amet consectetur adipisicing elit. Odit itaque eaque quos esse totam a animi corrupti, sit deserunt veritatis.</div>
+          <div class="leading-relaxed text-white pb-2 md:pb-6 lg:pb-8">{{ val.body }}</div>
           <p class="date text-white">29.10.2022 | 14:32</p>
         </div>
       </RouterLink>
@@ -58,7 +56,9 @@
     <form class="flex flex-col items-start gap-4">
       <h3 class="title text-2xl pb-3">Поделитесь впечатлением о товаре</h3>
       <textarea class="bg-transparent outline-none rounded-lg p-3 border border-primaryBlue" cols="40" rows="5" placeholder="Напишите ваш отзыв"></textarea>
-      <ButtonFillVue color="#002e69"><span class="py-2">Sent Message</span></ButtonFillVue>
+      <button @click.prevent="addCommitByUserId">
+        <ButtonFillVue color="#002e69"><span class="py-2">Sent Message</span></ButtonFillVue>
+      </button>
     </form>
 
     <div>
@@ -70,25 +70,80 @@
       </div>
     </div>
   </div>
+  <LoadingModal v-if="loading" />
 </template>
 
 <script setup lang="ts">
+import { ref } from "vue"
+import { useUserStore } from "@/store/userStore"
 import { Swiper, SwiperSlide } from "swiper/vue"
 import { RouterLink } from "vue-router"
 import ButtonFillVue from "../buttons/ButtonFill.vue"
+import LoadingModal from "../LoadingModal.vue"
+import { useToast } from "vue-toastification"
+import { useRouter, useRoute } from "vue-router"
 
 import "swiper/css"
 import "swiper/css/navigation"
 import "swiper/css/pagination"
 
 import { Navigation, Pagination } from "swiper"
-import { ref } from "vue"
+import { publicApi } from "@/plugins/axios"
+
+const store = useUserStore()
+const toast = useToast()
+const router = useRouter()
+const route = useRoute()
+const loading = ref(false)
 
 const purchaseRate = ref<number | null>(null)
 function handleRate(i: number) {
   console.log(i)
   purchaseRate.value = i
 }
+
+interface CommentsData {
+  body: string
+  id: number
+  postId: number
+  user: { id: number; username: string }
+}
+
+async function addCommitByUserId() {
+  if (!store.userId()) {
+    toast.error("Siz Ro'yxatdan o'tishingiz kerak")
+    router.push("/login")
+    return
+  }
+  try {
+    loading.value = true
+    await publicApi.post("https://dummyjson.com/comments/add", {
+      body: "This makes all sense to me!",
+      postId: store.userId(),
+      userId: 5,
+    })
+    toast.success("You have successfully added a commit")
+  } catch (e) {
+    console.log(e)
+  } finally {
+    loading.value = false
+  }
+}
+
+const commentsData = ref<CommentsData[]>([])
+async function GetAllCommentsByPostId() {
+  try {
+    loading.value = true
+    const res = await publicApi.get(`https://dummyjson.com/comments/post/${route.params.id}`)
+    commentsData.value = res.data.comments
+    console.log(res)
+  } catch (e) {
+    console.log(e)
+  } finally {
+    loading.value = false
+  }
+}
+GetAllCommentsByPostId()
 </script>
 
 <style>
