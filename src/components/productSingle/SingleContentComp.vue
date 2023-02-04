@@ -76,13 +76,12 @@ const dataProducts = reactive([
 ])
 
 async function addToCart() {
+  loading.value = true
+  router.push("/products/cart")
+  if (!store.isRegisteration) return
   try {
-    loading.value = true
-    const res = await publicApi("/carts/add", {
+    await publicApi("/carts/add", {
       method: "POST",
-      headers: {
-        Authorization: `Bearer ${store.userToken()}`,
-      },
       data: {
         userId: store.userId(),
         products: [
@@ -93,11 +92,10 @@ async function addToCart() {
         ],
       },
     })
-    router.push("/products/cart")
     toast.success("Product successfully added")
   } catch (e) {
     console.log(e)
-    toast.success("Something went wrong")
+    toast.error("Something went wrong")
   } finally {
     loading.value = false
   }
