@@ -46,13 +46,14 @@
 </template>
 
 <script setup lang="ts">
-import { publicApi } from "@/plugins/axios"
 import { ref, reactive } from "vue"
 import { useRoute, useRouter } from "vue-router"
-import ButtonFill from "../buttons/ButtonFill.vue"
-import { useUserStore } from "@/store/userStore"
-import LoadingModal from "@/components/loadingModal.vue"
 import { useToast } from "vue-toastification"
+
+import { publicApi } from "@/plugins/axios"
+import { useUserStore } from "@/store/userStore"
+import ButtonFill from "../buttons/ButtonFill.vue"
+import LoadingModal from "@/components/loadingModal.vue"
 
 const store = useUserStore()
 const route = useRoute()
