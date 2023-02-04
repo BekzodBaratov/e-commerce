@@ -1,7 +1,7 @@
 <template>
   <Header />
-  <div v-if="productData" class="container mx-auto py-6">
-    <h2 class="hidden lg:block text-xl mb-2 text-black">{{ productData.title }}</h2>
+  <div v-if="productData" class="container mx-auto py-6 text-primary">
+    <h2 class="text-2xl mb-2 font-semibold">{{ productData.title }}</h2>
     <div class="flex items-center">
       <svg aria-hidden="true" class="w-6 h-6 text-yellow-500" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
         <title>Rating star</title>

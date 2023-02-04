@@ -1,6 +1,6 @@
 <template>
   <Header />
-  <div class="container mx-auto mt-4 px-2 md:px-0">
+  <div class="container mx-auto mt-4 md:px-0">
     <div class="flex flex-col gap-2 md:flex-row justify-between items-start md:items-end">
       <div class="flex gap-2">
         <p class="s font-semibold">All Products:</p>
@@ -8,7 +8,7 @@
       </div>
     </div>
 
-    <div v-if="data.products" class="my-4 grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+    <div v-if="data.products" class="my-4 grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 md:gap-6">
       <CardVue v-for="product in data.products" :key="product.id" :data="product" />
     </div>
   </div>

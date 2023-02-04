@@ -1,7 +1,8 @@
 <template>
   <div class="fixed z-[999999] top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2">
-    <div class="loginModalbg shadow-md px-8 py-16 text-[#F4F6F9] text-lg">
+    <div class="loginModalbg shadow-md px-8 py-10 text-[#F4F6F9] text-lg">
       <div class="flex flex-col gap-6">
+        <img class="h-12 mx-auto" src="../../assets/logo/logo.png" alt="" />
         <form class="flex flex-col gap-6">
           <div class="flex flex-col">
             <div class="mb-4 flex flex-col">

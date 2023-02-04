@@ -1,5 +1,5 @@
 <template>
-  <div class="fixed z-[99] top-0 inset-x-0 bg-white shadow-md py-2">
+  <div class="fixed z-[99] top-0 inset-x-0 bg-white shadow-md py-2 text-primary">
     <div class="container mx-auto flex justify-between items-center">
       <RouterLink to="/" class="logo">
         <img class="h-7 md:h-10" src="@/assets/logo/logo.png" alt="logo" />

@@ -1,5 +1,5 @@
 <template>
-  <div class="">
+  <div class="text-primary">
     <div class="grid grid-cols-2 pb-6 text-primary">
       <div class="text-2xl justify-between">
         <p>Quantity</p>
