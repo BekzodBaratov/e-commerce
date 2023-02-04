@@ -53,7 +53,7 @@ import { useToast } from "vue-toastification"
 import { publicApi } from "@/plugins/axios"
 import { useUserStore } from "@/store/userStore"
 import ButtonFill from "../buttons/ButtonFill.vue"
-import LoadingModal from "@/components/loadingModal.vue"
+import LoadingModal from "../LoadingModal.vue"
 
 const store = useUserStore()
 const route = useRoute()
